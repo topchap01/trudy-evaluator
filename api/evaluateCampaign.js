@@ -12,7 +12,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 if (!getApps().length) {
   initializeApp(firebaseConfig);
 }
-const db = getFirestore();
+
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
