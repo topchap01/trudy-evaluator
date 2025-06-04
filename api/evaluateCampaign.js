@@ -1,7 +1,7 @@
 // /api/evaluateCampaign.js
 
 import { OpenAI } from 'openai';
-import { buildEvaluatorPrompt } from '../../lib/prompts.js';
+import { buildEvaluatorPrompt } from '../lib/prompts.js';
 import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { initializeApp, getApps } from 'firebase/app';
 import { firebaseConfig } from '../../src/firebase';
