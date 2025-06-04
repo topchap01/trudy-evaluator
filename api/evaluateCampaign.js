@@ -4,8 +4,8 @@ import { OpenAI } from 'openai';
 import { buildEvaluatorPrompt } from '../lib/prompts.js';
 import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { initializeApp, getApps } from 'firebase/app';
-import { firebaseConfig } from '../../src/firebase';
-import { sendEvaluationEmail } from '../../lib/sendEvaluationEmail.js';
+import { firebaseConfig } from '../src/firebase';
+import { sendEvaluationEmail } from '../lib/sendEvaluationEmail.js';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
