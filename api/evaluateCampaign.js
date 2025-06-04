@@ -1,9 +1,11 @@
+// /api/evaluateCampaign.js
+
 import { OpenAI } from 'openai';
 import { buildEvaluatorPrompt } from '../../lib/prompts';
-import { sendEvaluateEmail } from '../../lib/sendEvaluateEmail';
 import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { initializeApp, getApps } from 'firebase/app';
 import { firebaseConfig } from '../../src/firebase';
+import { sendEvaluationEmail } from '../../lib/sendEvaluationEmail.js';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -37,14 +39,14 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'GPT returned no usable content.' });
     }
 
-    // Send evaluation to email
-    await sendEvaluateEmail({
+    // ✅ Send the evaluation email
+    await sendEvaluationEmail({
       to: data.email,
       subject: `Your Trudy Campaign Evaluation for ${data.brandName}`,
-      htmlContent: html,
+      html,
     });
 
-    // Store evaluation in Firestore
+    // ✅ Save to Firestore
     await addDoc(collection(db, 'evaluations'), {
       ...data,
       html,
