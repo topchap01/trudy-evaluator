@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import { callGPT } from "../../lib/openai";
-import { sendEvaluationEmail } from "../../lib/sendEvaluationEmail"; // You'll create this helper
 
 const CampaignForm = () => {
   const [page, setPage] = useState(1);
@@ -60,7 +59,8 @@ const CampaignForm = () => {
     if (!validateForm()) return;
 
     try {
-      const evaluationHtml = await callGPT({ mode: "evaluate", data: formData });
+      const evaluationHtml = await callGPT(formData);
+
 
       await addDoc(collection(db, "campaigns"), {
         ...formData,
@@ -68,8 +68,7 @@ const CampaignForm = () => {
         createdAt: serverTimestamp()
       });
 
-      await sendEvaluationEmail(formData.email, evaluationHtml);
-
+     
       setSubmitted(true);
     } catch (error) {
       console.error("Error submitting campaign:", error);
