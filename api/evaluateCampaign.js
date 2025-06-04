@@ -29,7 +29,6 @@ export default async function handler(req, res) {
       model: 'gpt-4-turbo',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.75,
-      response_format: 'html',
     });
 
     const html = chat.choices?.[0]?.message?.content;
