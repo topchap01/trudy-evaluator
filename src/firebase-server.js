@@ -1,7 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// Server-side safe config
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -16,4 +15,5 @@ if (!getApps().length) {
   initializeApp(firebaseConfig);
 }
 
-export const db = getFirestore();
+const db = getFirestore();
+export { db }; // ✅ Export only db
