@@ -2,17 +2,11 @@
 
 import { OpenAI } from 'openai';
 import { buildEvaluatorPrompt } from '../lib/prompts.js';
-import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
-import { initializeApp, getApps } from 'firebase/app';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../src/firebase-server.js';
 import { sendEvaluationEmail } from '../lib/sendEvaluationEmail.js';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
-
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

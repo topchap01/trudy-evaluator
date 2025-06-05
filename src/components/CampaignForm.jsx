@@ -3,6 +3,28 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 import { callGPT } from "../../lib/openai";
 
+const hints = {
+  name: "Who's submitting this? Useful if we need to follow up.",
+  email: "We’ll send the evaluation to this address.",
+  company: "Helps us contextualise your campaign goals.",
+  brandName: "Which brand is being promoted? Be specific.",
+  category: "This shapes our evaluation benchmark. Choose wisely.",
+  objective: "What are you trying to achieve? Be focused.",
+  targetAudience: "Who do you want to reach? Think like a planner.",
+  promotionType: "What kind of promotion is this?", 
+  offer: "Describe the deal/offer if not a prize-based promo.",
+  creativeHook: "The big idea – how are you grabbing attention?",
+  entryMechanic: "What's required to participate? Must be clear and fair.",
+  prizeInfo: "List all prizes, their value, and how they’ll be awarded.",
+  budget: "Your media/activation budget shapes feasibility.",
+  channels: "Where will this run? e.g. In-store, Meta, TV.",
+  startDate: "Campaign start date.",
+  endDate: "Campaign end date.",
+  retailer: "Is it retailer-specific? Helps us assess fit.",
+  tradeIncentive: "Any extra push for the trade? Detail it.",
+  country: "Country matters – legal rules and cultural context."
+};
+
 const CampaignForm = () => {
   const [page, setPage] = useState(1);
   const [submitted, setSubmitted] = useState(false);
@@ -61,14 +83,12 @@ const CampaignForm = () => {
     try {
       const evaluationHtml = await callGPT(formData);
 
-
       await addDoc(collection(db, "campaigns"), {
         ...formData,
         evaluationHtml,
         createdAt: serverTimestamp()
       });
 
-     
       setSubmitted(true);
     } catch (error) {
       console.error("Error submitting campaign:", error);
@@ -92,6 +112,7 @@ const CampaignForm = () => {
         onChange={handleChange}
         className={`w-full border rounded-md p-2 italic placeholder-gray-400 ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
       />
+      {hints[name] && <p className="text-sm text-gray-500 italic mt-1">{hints[name]}</p>}
       {errors[name] && <p className="text-sm text-red-500 mt-1">{errors[name]}</p>}
     </div>
   );
@@ -140,6 +161,7 @@ const CampaignForm = () => {
                   <option value="Electronics">Electronics / Gaming</option>
                   <option value="Other">Other</option>
                 </select>
+                {hints.category && <p className="text-sm text-gray-500 italic mt-1">{hints.category}</p>}
                 {errors.category && <p className="text-sm text-red-500 mt-1">{errors.category}</p>}
               </div>
               {renderInput("objective", "Campaign Objective", "e.g. Lift Q3 sales by 15%")}
