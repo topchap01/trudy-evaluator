@@ -1,5 +1,5 @@
 // /api/email.js
-import { sendEvaluationEmail } from "../lib/sendEvaluationEmail.js";
+import { sendEvaluationEmail } from "../firebase/functions/lib/sendEvaluationEmail.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
